@@ -12,5 +12,5 @@ The program connects to my OGE account and then goes to the summary page of my g
 ## Final render
 ### Display of subjects in the console
 ![alt text](https://github.com/Orchanyne/API-OGE-ESIREM/blob/master/result.png)
-### Mail sent when there was a new subject
+### Mail sent when there was a new grade in a subject
 ![alt text](https://github.com/Orchanyne/API-OGE-ESIREM/blob/master/email.png)
