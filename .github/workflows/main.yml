@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/API-OGE:latest
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/api-oge:latest
 
 jobs:
   build:
