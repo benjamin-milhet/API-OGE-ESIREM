@@ -29,16 +29,6 @@ jobs:
           context: .
           push: true
           tags: ${{ env.IMAGE_NAME }}
-      - uses: shrink/actions-docker-extract@v1
-        id: extract
-        with:
-          image: ${{ env.IMAGE_NAME }}
-          path: app/artifacts/.
-      - name: Push artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: reports
-          path: ${{ steps.extract.outputs.destination }}
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
