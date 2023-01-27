@@ -1,6 +1,7 @@
 # OGE-ESIREM-API
 
 [![Docker Image CI](https://github.com/benjamin-milhet/API-OGE-ESIREM/actions/workflows/docker-image.yml/badge.svg)](https://github.com/benjamin-milhet/API-OGE-ESIREM/actions/workflows/docker-image.yml)
+[![Docker](https://github.com/benjamin-milhet/API-OGE-ESIREM/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/benjamin-milhet/API-OGE-ESIREM/actions/workflows/docker-publish.yml)
 
 ## Introduction
 API to retrieve the number of grades on the OGE website (Website listing the grades of students) to know if a new grade is available. If a new grade has been entered, the program sends a notification e-mail with the subject.
