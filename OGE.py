@@ -1,17 +1,22 @@
-from flask import Flask, request
-import sys
-import requests
-import re
 import json
+import re
 import smtplib
+import sys
+
+import requests
+from flask import Flask
+
+from fbchat import Client
+from fbchat.models import *
 
 app = Flask(__name__)
 
 OGE_ESIREM = "https://casiut21.u-bourgogne.fr/cas-esirem/login?service=https%3A%2F%2Fiutdijon.u-bourgogne.fr%2Foge-esirem%2F"
 OGE_DETAILS = "https://iutdijon.u-bourgogne.fr/oge-esirem/stylesheets/etu/detailsEtu.xhtml"
+
 session = requests.session()
 
-@app.route("/connexion/<login>/<password>", methods=['POST'])
+@app.route("/connexion/<login>/<password>")
 def connexion(login, password):
     dataConnexion = {"username": login,
             "password": password,
@@ -32,7 +37,7 @@ def getViewState(url):
     else:
         return id[0], viewState[0]
 
-@app.route("/update/<email>", methods=['POST'])
+@app.route("/update/<email>")
 def update(email):
     id, viewState = getViewState(OGE_DETAILS)
     dataNote = {"javax.faces.partial.execute": "@all",
@@ -51,7 +56,7 @@ def update(email):
     nbNoteBis = []
     listMatiereNom = []
     totalNote = 0
-    i = 0;
+    i = 0
 
     for matiere in matieresResult :
         print(matiere[1], matiere[2])
@@ -80,11 +85,11 @@ def update(email):
     return str(getNoteTotal())
 
 def write(matieres):
-    with open("/home/pi/API-ON/data.json", "w") as fichier:
+    with open("data.json", "w") as fichier:
         fichier.write(matieres)
 
 def read():
-    with open('/home/pi/API-ON/data.json') as json_data:
+    with open('data.json') as json_data:
         data_dict = json.load(json_data)
     return data_dict
 
@@ -115,7 +120,7 @@ def getNotesMatieres():
 
 
 def envoyerMail(matieres, email):
-    with open("/home/pi/API-ON/passwordGmail.txt", "r") as fichier:
+    with open("passwordGmail.txt", "r") as fichier:
         SMTP_PASSWORD = fichier.read()
     SMTP_SERVER = "smtp.gmail.com"
     SMTP_PORT = 587
@@ -126,7 +131,7 @@ def envoyerMail(matieres, email):
     EMAIL_MESSAGE = ""
     for matiere in matieres:
         EMAIL_MESSAGE += "Vous avez une nouvelle note en " + matiere + ".\n"
-    EMAIL_MESSAGE = ["\n".join(msg.replace(u'\xe9', u' ')) for msg in EMAIL_MESSAGE]
+    EMAIL_MESSAGE = ["\n".join(msg.replace(u'\xe9', u'e')) for msg in EMAIL_MESSAGE]
     EMAIL_MESSAGE = ''.join(EMAIL_MESSAGE)
     s = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     s.starttls()
@@ -134,3 +139,15 @@ def envoyerMail(matieres, email):
     message = 'Subject: {}\n\n{}'.format(EMAIL_SUBJECT, EMAIL_MESSAGE)
     s.sendmail(EMAIL_FROM, EMAIL_TO, message)
     s.quit()
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "check_syntax":
+            print("Build [ OK ]")
+            exit(0)
+        else:
+            print("Passed argument not supported ! Supported argument : check_syntax")
+            exit(1)
+    app.run(debug=True)
+
